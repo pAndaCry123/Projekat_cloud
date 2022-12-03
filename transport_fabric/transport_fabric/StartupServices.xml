@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<StartupServicesManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+  <Parameters>
+    <Parameter Name="purchase_statefull_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="purchase_statefull_PartitionCount" DefaultValue="1" />
+    <Parameter Name="purchase_statefull_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="depart_statefull_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="depart_statefull_PartitionCount" DefaultValue="1" />
+    <Parameter Name="depart_statefull_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="bank_statefull_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="bank_statefull_PartitionCount" DefaultValue="1" />
+    <Parameter Name="bank_statefull_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="user_statefull_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="user_statefull_PartitionCount" DefaultValue="2" />
+    <Parameter Name="user_statefull_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="transaction_coordinator_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="transaction_coordinator_PartitionCount" DefaultValue="1" />
+    <Parameter Name="transaction_coordinator_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="Web_app_InstanceCount" DefaultValue="-1" />
+  </Parameters>
+  <Services>
+    <!-- The section below creates instances of service types, when an instance of this 
+         application type is created. You can also create one or more instances of service type using the 
+         ServiceFabric PowerShell module.
+
+         The attribute ServiceTypeName below must match the name defined in the imported ServiceManifest.xml file. -->
+    <Service Name="purchase_statefull" ServicePackageActivationMode="ExclusiveProcess">
+      <StatefulService ServiceTypeName="purchase_statefullType" TargetReplicaSetSize="[purchase_statefull_TargetReplicaSetSize]" MinReplicaSetSize="[purchase_statefull_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[purchase_statefull_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="depart_statefull" ServicePackageActivationMode="ExclusiveProcess">
+      <StatefulService ServiceTypeName="depart_statefullType" TargetReplicaSetSize="[depart_statefull_TargetReplicaSetSize]" MinReplicaSetSize="[depart_statefull_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[depart_statefull_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="bank_statefull" ServicePackageActivationMode="ExclusiveProcess">
+      <StatefulService ServiceTypeName="bank_statefullType" TargetReplicaSetSize="[bank_statefull_TargetReplicaSetSize]" MinReplicaSetSize="[bank_statefull_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[bank_statefull_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="user_statefull" ServicePackageActivationMode="ExclusiveProcess">
+      <StatefulService ServiceTypeName="user_statefullType" TargetReplicaSetSize="[user_statefull_TargetReplicaSetSize]" MinReplicaSetSize="[user_statefull_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[user_statefull_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="transaction_coordinator" ServicePackageActivationMode="ExclusiveProcess">
+      <StatefulService ServiceTypeName="transaction_coordinatorType" TargetReplicaSetSize="[transaction_coordinator_TargetReplicaSetSize]" MinReplicaSetSize="[transaction_coordinator_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[transaction_coordinator_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="Web_app" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="Web_appType" InstanceCount="[Web_app_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+  </Services>
+</StartupServicesManifest>

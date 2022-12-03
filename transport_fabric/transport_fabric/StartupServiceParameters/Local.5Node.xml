@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<StartupServices xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+  <Parameters>
+    <Parameter Name="purchase_statefull_PartitionCount" Value="1" />
+    <Parameter Name="purchase_statefull_MinReplicaSetSize" Value="3" />
+    <Parameter Name="purchase_statefull_TargetReplicaSetSize" Value="3" />
+    <Parameter Name="depart_statefull_PartitionCount" Value="1" />
+    <Parameter Name="depart_statefull_MinReplicaSetSize" Value="3" />
+    <Parameter Name="depart_statefull_TargetReplicaSetSize" Value="3" />
+    <Parameter Name="bank_statefull_PartitionCount" Value="1" />
+    <Parameter Name="bank_statefull_MinReplicaSetSize" Value="3" />
+    <Parameter Name="bank_statefull_TargetReplicaSetSize" Value="3" />
+    <Parameter Name="user_statefull_PartitionCount" Value="1" />
+    <Parameter Name="user_statefull_MinReplicaSetSize" Value="3" />
+    <Parameter Name="user_statefull_TargetReplicaSetSize" Value="3" />
+    <Parameter Name="transaction_coordinator_PartitionCount" Value="1" />
+    <Parameter Name="transaction_coordinator_MinReplicaSetSize" Value="3" />
+    <Parameter Name="transaction_coordinator_TargetReplicaSetSize" Value="3" />
+    <Parameter Name="Web_app_InstanceCount" Value="1" />
+  </Parameters>
+</StartupServices>
