@@ -14,7 +14,7 @@ namespace bank_statefull
         public bank_service()
         {
             this.context = new bank_table_context();
-          
+            add();
         }
         private void add()
         {
@@ -28,6 +28,11 @@ namespace bank_statefull
         public async Task<double> get_resources(int account_id)
         {
             return await context.return_resources(account_id);
+        }
+
+        public async Task update_user_account(int id_account, double amount)
+        {
+             await context.update_account(id_account, amount);
         }
     }
 }

@@ -12,8 +12,8 @@ namespace Common
     {
         public int id { get; set; }
         public string type { get; set; }
+        public string weather { get; set; }
         public double ticket_price { get; set; }
-        public string ticket_buy { get; set; }
         public string day_departure { get; set; }
         public string return_date { get; set; }
         public int total_tickets { get; set; }

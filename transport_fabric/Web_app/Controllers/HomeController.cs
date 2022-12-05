@@ -16,11 +16,35 @@ namespace Web_app.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        ServicePartitionClient<WcfCommunicationClient<ITransactions>> service_partition_client;
+        List<Departure> departures;
+
+        public HomeController()
+        {
+            load();
+            import();
+        }
+
+        public async Task<IActionResult> Index()
         {
             return View();
         }
+        public async void load()
+        {
+            var binding = WcfUtility.CreateTcpClientBinding();
 
+            service_partition_client = new
+                ServicePartitionClient<WcfCommunicationClient<ITransactions>>(
+                    new WcfCommunicationClientFactory<ITransactions>(clientBinding: binding),
+                    new Uri("fabric:/transport_fabric/transaction_coordinator"),
+                    new ServicePartitionKey(0)); //ovde se menja kasnije
+
+            
+        }
+        public async void import()
+        {
+            departures = await service_partition_client.InvokeWithRetryAsync(x => x.Channel.return_all_departures());
+        }
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
@@ -32,21 +56,13 @@ namespace Web_app.Controllers
         public async Task<IActionResult> login(string username, string password)
         {
             //Send to table and check
-            FabricClient fabric_client = new FabricClient();
+            //FabricClient fabric_client = new FabricClient();
 
             //int partition_number = (await fabric_client.QueryManager.GetApplicationListAsync(new Uri("fabric:/transport_fabric/transaction_cordinator"))).Count;
-            var binding = WcfUtility.CreateTcpClientBinding();
-
-          
-
-            ServicePartitionClient<WcfCommunicationClient<ITransactions>> service_partition_client = new
-                ServicePartitionClient<WcfCommunicationClient<ITransactions>>(
-                    new WcfCommunicationClientFactory<ITransactions>(clientBinding: binding),
-                    new Uri("fabric:/transport_fabric/transaction_coordinator"),
-                    new ServicePartitionKey(0)); //ovde se menja kasnije
+            import();
             bool flag = await service_partition_client.InvokeWithRetryAsync(client => client.Channel.check_user(username, password));
             if (flag)
-                return View("user_store");
+                return View("user_store",departures);
             return View("Index");
         }
         [HttpPost("/register")]
@@ -81,6 +97,43 @@ namespace Web_app.Controllers
         {
             //Send to table and check
             return View("index");
+        }
+
+
+        [HttpPost("/filter")]
+        public async Task<IActionResult> filter(string type, DateTime departure_day,string free_tickets)
+        {
+            //Send to table and check
+            //FabricClient fabric_client = new FabricClient();
+
+            //int partition_number = (await fabric_client.QueryManager.GetApplicationListAsync(new Uri("fabric:/transport_fabric/transaction_cordinator"))).Count;
+
+            //bool flag = await service_partition_client.InvokeWithRetryAsync(client => client.Channel.check_user(username, password));
+            if (free_tickets == null)
+                free_tickets = "off";
+            departures = await service_partition_client.InvokeWithRetryAsync(
+                                    x => x.Channel.return_filtered_departures(type, free_tickets, departure_day));
+                return View("user_store", departures);
+        }
+
+
+
+        [HttpPost("/purchase")]
+        public async Task<IActionResult> purchase(string username, int id_departure, int count)
+        {
+            //Send to table and check
+            //FabricClient fabric_client = new FabricClient();
+
+            //int partition_number = (await fabric_client.QueryManager.GetApplicationListAsync(new Uri("fabric:/transport_fabric/transaction_cordinator"))).Count;
+
+            //bool flag = await service_partition_client.InvokeWithRetryAsync(client => client.Channel.check_user(username, password));
+            bool flag = await service_partition_client.InvokeWithRetryAsync(x => x.Channel.prepare(username, id_departure, count));
+
+            if(flag)
+                Console.WriteLine("Made it");
+            else
+                Console.WriteLine("Something wrong");
+            return View("user_store",departures);
         }
 
     }

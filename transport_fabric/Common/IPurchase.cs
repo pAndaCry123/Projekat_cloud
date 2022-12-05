@@ -10,7 +10,8 @@ namespace Common
     [ServiceContract]
     public interface IPurchase
     {
+
         [OperationContract]
-        Task hit();
+        Task<int> create_pruchase(int id_deparutere, int count,string username);
     }
 }

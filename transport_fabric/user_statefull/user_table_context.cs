@@ -30,7 +30,7 @@ namespace user_statefull
                           select g;
             try
             {
-                return results.Count().ToString();
+                return results.ToList().Count.ToString();
             }catch(Exception ex)
             {
                 return "0";
@@ -38,6 +38,21 @@ namespace user_statefull
            
         }
 
+        public async Task<User> return_user_username(string username)
+        {
+            var results = from g in _table.CreateQuery<User>()
+                          where g.PartitionKey == "User"
+                          select g;
+
+            foreach (User item in results)
+            {
+                if (item.username.Equals(username))
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
         public async Task<User> return_user(string username, string password)
         {
             var results = from g in _table.CreateQuery<User>()
@@ -67,6 +82,23 @@ namespace user_statefull
                 }
             }
             return false;
+        }
+        public void update_user(int id_purchase,string username)
+        {
+            var results = from g in _table.CreateQuery<User>()
+                          where g.PartitionKey == "User"
+                          select g;
+
+            foreach (User item in results)
+            {
+                if (item.username.Equals(username) )
+                {
+                    item.list_purchase.Add(id_purchase);
+                    TableOperation insertOperation = TableOperation.InsertOrReplace(item);
+                    _table.Execute(insertOperation);
+                    break;
+                }
+            }
         }
         public void add_user(User new_user)
         {

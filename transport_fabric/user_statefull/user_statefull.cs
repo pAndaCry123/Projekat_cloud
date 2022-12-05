@@ -34,7 +34,7 @@ namespace user_statefull
             return new[]{
                 new ServiceReplicaListener(context =>
                 {
-                    return new  WcfCommunicationListener<ITransactions>(context,
+                    return new  WcfCommunicationListener<IUser_service>(context,
                             new user_service(),
                             WcfUtility.CreateTcpListenerBinding(),
                             "ServiceEndpoint"

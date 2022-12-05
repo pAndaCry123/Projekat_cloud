@@ -1,8 +1,59 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model IEnumerable<Common.Departure>
 <p>
     Petar Wins
 </p>
+
+
+
+
+
+
+
+<div>
+    <h1>Summary furture departure</h1>
+    @{ 
+        <table border="1" style="text-align:center">
+                <tr>
+                    <th>Id</th>
+                    <th>Transport type</th>
+                    <th>Ticket price</th>
+                    <th>Total tickets</th>
+                    <th>Rest free tickets</th>
+                    <th>Departure day</th>
+                    <th>Return day</th>
+                    <th>Weather</th>
+                </tr>
+            @foreach (Common.Departure item in Model)
+            {
+            <tr> <td> @item.id</td>  <td>@item.type</td> <td>@item.ticket_price</td> <td>@item.total_tickets</td> 
+                <td>@item.free_ticket_slots</td> <td>@item.day_departure</td> <td>@item.return_date</td>
+                <td>@item.weather</td>
+            </tr>
+            }
+        </table>
+
+        <p>You can filter this:</p>
+        <form action="filter" method="post">
+            <select id="transport" name="type">
+                <option value="Autobus">Autobus</option>
+                <option value="Plane">Plane</option>
+                <option value="Train">Train</option>
+                
+            </select>
+           <input type="date" name="departure_day" />
+           <input type="checkbox" name="free_tickets" />
+           <input type="submit" value="Search" />
+        </form>
+        
+    }
+</div>
+
+<div>
+    <p>Create purchase</p>
+    <form action="purchase" method="post">
+        <input type="text" name="username" />
+        <input type="number" name="id_departure" />
+        <input type="number" name="count" />
+        <input type="submit" value="Purchase" />
+    </form>
+</div>

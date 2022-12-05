@@ -40,6 +40,22 @@ namespace bank_statefull
             }
             return -1;
         }
+        public async Task update_account(int account_id,double sum)
+        {
+            var results = from g in _table.CreateQuery<Account>()
+                          where g.PartitionKey == "Account"
+                          select g;
+
+            foreach (Account item in results)
+            {
+                if (item.account_id == account_id)
+                {
+                    item.amount -= sum;
+                    TableOperation insertOperation = TableOperation.InsertOrReplace(item);
+                    _table.Execute(insertOperation);
+                }
+            }
+        }
 
         public void add_account(Account new_acc)
         {

@@ -23,8 +23,23 @@ namespace purchase_statefull
             _table = tableClient.GetTableReference("PurchaseTable");
             _table.CreateIfNotExists();
         }
-       
-        public void add_new_pruchase(Purchase new_pruchase)
+
+        public string return_count_purchase()
+        {
+            var results = from g in _table.CreateQuery<Purchase>()
+                          where g.PartitionKey == "Purchase"
+                          select g;
+            try
+            {
+                return (results.ToList().Count).ToString();
+            }
+            catch (Exception ex)
+            {
+                return "0";
+            }
+
+        }
+        public async Task add_new_pruchase(Purchase new_pruchase)
         {
             TableOperation insertOperation = TableOperation.InsertOrReplace(new_pruchase);
             _table.Execute(insertOperation);

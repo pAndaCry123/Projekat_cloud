@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace user_statefull
 {
-    public class user_service : ITransactions
+    public class user_service : IUser_service
     {
         //For now just cover table and constantly write data to table :D
         user_table_context context;
@@ -34,6 +34,16 @@ namespace user_statefull
                 context.add_user(new User(row) { username = username, email = email, password = password, account_id = account_id });
                 return true;
             }
+        }
+
+        public async Task<User> return_user(string username)
+        {
+            return await context.return_user_username(username);
+        }
+
+        public async Task update_user_purchase_list(int id_purchase,string username)
+        {
+               context.update_user(id_purchase, username);
         }
     }
 }
