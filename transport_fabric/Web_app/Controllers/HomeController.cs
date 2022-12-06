@@ -136,5 +136,15 @@ namespace Web_app.Controllers
             return View("user_store",departures);
         }
 
+        [HttpPost("/cancel_ticket")]
+        public async Task<IActionResult> cancel_ticket(int purchase_id)
+        {
+            bool flag = await service_partition_client.InvokeWithRetryAsync(x => x.Channel.cancel_purchase(purchase_id));
+            if (flag)
+                Console.WriteLine("Made it");
+            else
+                Console.WriteLine("Something wrong");
+            return View("user_store", departures);
+        }
     }
 }

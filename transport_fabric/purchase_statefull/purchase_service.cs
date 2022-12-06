@@ -16,6 +16,11 @@ namespace purchase_statefull
             context = new pur_table_context();
         }
 
+        public async Task<bool> cancel_purchase(int purchase_id)
+        {
+           return await context.check_can_purchase_cancel(purchase_id);
+        }
+
         public async Task<int> create_pruchase(int id_deparutere, int count, string userneme)
         {
             string row_key = context.return_count_purchase();
@@ -25,5 +30,16 @@ namespace purchase_statefull
 
             return int.Parse(row_key);
         }
+
+        public async Task delete_purchase(Purchase purchase)
+        {
+            await context.delete_purchase(purchase);
+        }
+
+        public async Task<Purchase> purchase_get(int purchase_id)
+        {
+            return await context.return_pruchase(purchase_id);
+        }
+
     }
 }

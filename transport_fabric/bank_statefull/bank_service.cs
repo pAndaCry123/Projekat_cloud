@@ -34,5 +34,15 @@ namespace bank_statefull
         {
              await context.update_account(id_account, amount);
         }
+
+        public async Task<Account> account_get(int account_id)
+        {
+            return await context.return_account(account_id);
+        }
+
+        public async Task update_account(int account_id, double amount)
+        {
+            await context.retrive_account(account_id, amount);
+        }
     }
 }

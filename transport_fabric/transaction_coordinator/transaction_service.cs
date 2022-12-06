@@ -49,6 +49,33 @@ namespace transaction_coordinator
                        new ServicePartitionKey(0)); //ovde se menja kasnije
         }
 
+        public async Task<bool> cancel_purchase(int purchase_id)
+        {
+            bool flag = await service_purchase.InvokeWithRetryAsync(x => x.Channel.cancel_purchase(purchase_id));
+
+            if (flag)
+            {
+                Purchase purchase = await service_purchase.InvokeWithRetryAsync(x => x.Channel.purchase_get(purchase_id));
+
+                User user = await service_partition_user.InvokeWithRetryAsync(x => x.Channel.return_user(purchase.username));
+                Departure departure = await service_departure.InvokeWithRetryAsync(x => x.Channel.return_departure(purchase.departure_id, 0));
+
+                if(user != null && departure != null)
+                {
+                    Account account = await service_account.InvokeWithRetryAsync(x => x.Channel.account_get(user.account_id));
+
+                    await service_account.InvokeWithRetryAsync(x => x.Channel.update_account(account.account_id, departure.ticket_price * purchase.count_tickets));
+                    await service_departure.InvokeWithRetryAsync(x => x.Channel.retrive_deprature(departure.id, purchase.count_tickets));
+
+                    await this.commit_purchase(purchase);
+
+                    return true;
+                }
+
+            }
+            return false;
+        }
+
         public async Task<bool> check_user(string username, string password)
         {
             FabricClient fabric_client = new FabricClient();
@@ -93,6 +120,17 @@ namespace transaction_coordinator
             }
         }
 
+        public async Task commit_purchase(Purchase purchase)
+        {
+            try
+            {
+                await service_purchase.InvokeWithRetryAsync(x => x.Channel.delete_purchase(purchase));
+            }catch(Exception ex)
+            {
+                this.rollback();
+            }
+        }
+
         public async Task<bool> create_user(string username, string email, string password, int account_id)
         {
             FabricClient fabric_client = new FabricClient();
@@ -110,6 +148,8 @@ namespace transaction_coordinator
 
             return flag;
         }
+
+    
 
         public async Task<bool> prepare(string username, int id_departure, int count)
         {

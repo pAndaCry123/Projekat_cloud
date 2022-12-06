@@ -15,5 +15,12 @@ namespace Common
         Task<double> get_resources(int account_id);
         [OperationContract]
         Task update_user_account(int id_account, double amount);
+
+
+        [OperationContract]
+        Task<Account> account_get(int account_id);
+
+        [OperationContract]
+        Task update_account(int account_id,double amount);
     }
 }

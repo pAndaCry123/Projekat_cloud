@@ -52,3 +52,9 @@ C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\purchase_statefull\obj
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\purchase_statefull\obj\x64\Debug\purchase_statefull.csproj.CopyComplete
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\purchase_statefull\obj\x64\Debug\purchase_statefull.exe
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\purchase_statefull\obj\x64\Debug\purchase_statefull.pdb
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\purchase_statefull\bin\x64\Debug\depart_statefull.exe
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\purchase_statefull\bin\x64\Debug\user_statefull.exe
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\purchase_statefull\bin\x64\Debug\depart_statefull.pdb
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\purchase_statefull\bin\x64\Debug\depart_statefull.exe.config
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\purchase_statefull\bin\x64\Debug\user_statefull.pdb
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\purchase_statefull\bin\x64\Debug\user_statefull.exe.config

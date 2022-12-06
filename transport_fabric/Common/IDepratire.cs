@@ -21,5 +21,8 @@ namespace Common
 
         [OperationContract]
         Task update_deprature(int id_deparute, int count);
+
+        [OperationContract]
+        Task retrive_deprature(int id_deparute, int count);
     }
 }

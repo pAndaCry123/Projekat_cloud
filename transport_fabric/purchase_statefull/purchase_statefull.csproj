@@ -140,6 +140,14 @@
       <Project>{48FDA264-3568-4867-B5C3-01434E580D55}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\depart_statefull\depart_statefull.csproj">
+      <Project>{4F3CC871-BEB6-43A0-B8C3-487CEBB756C6}</Project>
+      <Name>depart_statefull</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\user_statefull\user_statefull.csproj">
+      <Project>{C8C68687-DCF2-41D2-A9BF-638464522748}</Project>
+      <Name>user_statefull</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

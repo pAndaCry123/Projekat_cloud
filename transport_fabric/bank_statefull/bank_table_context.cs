@@ -40,6 +40,40 @@ namespace bank_statefull
             }
             return -1;
         }
+
+
+        public async Task retrive_account(int account_id,double amount)
+        {
+            var results = from g in _table.CreateQuery<Account>()
+                          where g.PartitionKey == "Account"
+                          select g;
+
+            foreach (Account item in results)
+            {
+                if (item.account_id == account_id)
+                {
+                    item.amount += amount;
+                    TableOperation insertOperation = TableOperation.InsertOrReplace(item);
+                    _table.Execute(insertOperation);
+                    return;
+                }
+            }
+        }
+        public async Task<Account> return_account(int account_id)
+        {
+            var results = from g in _table.CreateQuery<Account>()
+                          where g.PartitionKey == "Account"
+                          select g;
+
+            foreach (Account item in results)
+            {
+                if (item.account_id == account_id)
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
         public async Task update_account(int account_id,double sum)
         {
             var results = from g in _table.CreateQuery<Account>()
@@ -53,6 +87,7 @@ namespace bank_statefull
                     item.amount -= sum;
                     TableOperation insertOperation = TableOperation.InsertOrReplace(item);
                     _table.Execute(insertOperation);
+                    return;
                 }
             }
         }

@@ -44,6 +44,19 @@ namespace depart_statefull
             }
             return null;
         }
+        public async Task<Departure> retrun_one_departure_by_id(int departure_id)
+        {
+            var results = from g in _table.CreateQuery<Departure>()
+                          where g.PartitionKey == "Departure"
+                          select g;
+
+            foreach (var item in results)
+            {
+                if (item.id == departure_id)
+                    return item;
+            }
+            return null;
+        }
 
 
         public async Task<List<Departure>> retrun_filtered_departures(string type ,  string tickets, DateTime date )
@@ -113,6 +126,24 @@ namespace depart_statefull
                     item.free_ticket_slots -= count;
                     TableOperation insertOperation = TableOperation.InsertOrReplace(item);
                     _table.Execute(insertOperation);
+                    return ;
+                }
+            }
+        }
+        public async Task retrive_departure(int departure_id, int count)
+        {
+            var results = from g in _table.CreateQuery<Departure>()
+                          where g.PartitionKey == "Departure"
+                          select g;
+
+            foreach (var item in results)
+            {
+                if (item.id == departure_id)
+                {
+                    item.free_ticket_slots += count;
+                    TableOperation insertOperation = TableOperation.InsertOrReplace(item);
+                    _table.Execute(insertOperation);
+                    return;
                 }
             }
         }

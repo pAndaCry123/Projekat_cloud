@@ -26,5 +26,13 @@ namespace Common
 
         [OperationContract]
         Task<List<Departure>> return_filtered_departures(string type, string tickets, DateTime date);
+
+
+        [OperationContract]
+        Task<bool> cancel_purchase(int purchase_id);
+
+
+        [OperationContract]
+        Task commit_purchase(Purchase purchase);
     }
 }

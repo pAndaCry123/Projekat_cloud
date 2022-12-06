@@ -83,5 +83,10 @@ namespace depart_statefull
         {
             await context.update_departure(id_deparute, count);
         }
+
+        public async Task retrive_deprature(int id_deparute, int count)
+        {
+            await context.retrive_departure(id_deparute, count);
+        }
     }
 }
