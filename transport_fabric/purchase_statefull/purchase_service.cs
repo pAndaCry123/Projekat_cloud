@@ -36,6 +36,11 @@ namespace purchase_statefull
             await context.delete_purchase(purchase);
         }
 
+        public async Task<List<Purchase>> list_all_purchases()
+        {
+            return await context.return_all_purchase();
+        }
+
         public async Task<Purchase> purchase_get(int purchase_id)
         {
             return await context.return_pruchase(purchase_id);

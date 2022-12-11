@@ -41,6 +41,14 @@ namespace purchase_statefull
             }
 
         }
+        public async Task<List<Purchase>> return_all_purchase()
+        {
+            var results = from g in _table.CreateQuery<Purchase>()
+                          where g.PartitionKey == "Purchase"
+                          select g;
+            return results.ToList();
+
+        }
 
         public async Task<Purchase> return_pruchase(int purchase_id)
         {

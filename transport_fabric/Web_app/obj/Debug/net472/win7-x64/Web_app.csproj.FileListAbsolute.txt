@@ -197,3 +197,6 @@ C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\bin\Debug\net4
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\bin\Debug\net472\win7-x64\System.Data.SqlClient.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\bin\Debug\net472\win7-x64\System.Interactive.Async.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\Razor\Views\Home\user_store.cshtml.g.cs
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\bin\Debug\net472\win7-x64\MailKit.dll
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\bin\Debug\net472\win7-x64\MimeKit.dll
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\bin\Debug\net472\win7-x64\BouncyCastle.Crypto.dll

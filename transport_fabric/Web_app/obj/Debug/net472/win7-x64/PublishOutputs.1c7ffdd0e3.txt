@@ -45,6 +45,7 @@ C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net4
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Web_app.exe
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Web_app.exe.config
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Web_app.pdb
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\MailKit.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Microsoft.AspNetCore.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Microsoft.AspNetCore.Antiforgery.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Microsoft.AspNetCore.Authentication.Abstractions.dll
@@ -173,9 +174,11 @@ C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net4
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Microsoft.Win32.Registry.dll
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\MimeKit.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Newtonsoft.Json.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Newtonsoft.Json.Bson.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\NuGet.Frameworks.dll
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\BouncyCastle.Crypto.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Remotion.Linq.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\System.Buffers.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\System.Collections.Immutable.dll

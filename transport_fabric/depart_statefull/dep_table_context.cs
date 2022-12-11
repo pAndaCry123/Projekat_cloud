@@ -64,34 +64,11 @@ namespace depart_statefull
             var results = from g in _table.CreateQuery<Departure>()
                           where g.PartitionKey == "Departure"
                           select g;
-            //List<Departure> ret = results.ToList();
-            //List<Departure> index = new List<Departure>();
-            //bool flag = false;
-            //for (int i = 0; i < ret.Count -1; i++)
-            //{
-            //    var item = ret[i];
-            //    if (!item.type.Equals(type))
-            //        flag = true;
-            //    if (tickets != null && tickets.Equals("on") && !(item.free_ticket_slots > 0))
-            //        flag = true;
-
-            //    DateTime dateTime = DateTime.Parse(item.day_departure);
-            //    if (date != null && (DateTime.Compare(dateTime, date) < 0))
-            //        flag = true;
-
-            //    if (flag)
-            //        index.Add(item);
-            //}
-
-            //foreach (var item in index)
-            //{
-            //    ret.Remove(item);
-            //}
-            //&& 
-            //(DateTime.Compare(DateTime.Parse(x.day_departure), date) > 0)
-            var ret = results.Where(x => x.type.Equals(type) );
+            var ret = results;
+            if (type!="none")
+                ret = results.Where(x => x.type.Equals(type) );
             if (tickets.Equals("on"))
-               ret = ret.Where(x => x.free_ticket_slots > 151);
+               ret = ret.Where(x => x.free_ticket_slots > 0);
 
             DateTime dateBound = DateTime.Parse("1/1/0001 12:00:00 AM");
             if (date != dateBound)
@@ -147,5 +124,22 @@ namespace depart_statefull
                 }
             }
         }
+        public string return_count_departures()
+        {
+            var results = from g in _table.CreateQuery<Departure>()
+                          where g.PartitionKey == "Departure"
+                          select g;
+            try
+            {
+                return (results.ToList().Count).ToString();
+            }
+            catch (Exception ex)
+            {
+                return "0";
+            }
+
+        }
+
+
     }
 }

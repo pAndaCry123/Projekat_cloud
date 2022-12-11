@@ -24,5 +24,9 @@ namespace Common
 
         [OperationContract]
         Task retrive_deprature(int id_deparute, int count);
+
+
+        [OperationContract]
+        Task add_departure(type_transport transport, double ticket_price, int total_tickets, DateTime departure_day, double lat, double lon);
     }
 }

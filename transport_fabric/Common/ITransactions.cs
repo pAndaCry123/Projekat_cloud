@@ -34,5 +34,15 @@ namespace Common
 
         [OperationContract]
         Task commit_purchase(Purchase purchase);
+
+        [OperationContract]
+        Task<List<Purchase>> return_history_purchases();
+
+
+        [OperationContract]
+        Task<List<Purchase>> filter_history_purchases(string date, string tickets);
+
+        [OperationContract]
+        Task add_departure(type_transport transport, double ticket_price, int total_tickets, DateTime departure_day, double lat, double lon);
     }
 }

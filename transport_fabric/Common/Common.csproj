@@ -57,6 +57,7 @@
     <Compile Include="Departure.cs" />
     <Compile Include="IBank.cs" />
     <Compile Include="IDepratire.cs" />
+    <Compile Include="IHistory.cs" />
     <Compile Include="IPurchase.cs" />
     <Compile Include="ITransactions.cs" />
     <Compile Include="IUser_service.cs" />

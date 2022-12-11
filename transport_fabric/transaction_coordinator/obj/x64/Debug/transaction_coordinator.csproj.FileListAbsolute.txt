@@ -50,3 +50,15 @@ C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinato
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\obj\x64\Debug\transaction_coordinator.csproj.CopyComplete
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\obj\x64\Debug\transaction_coordinator.exe
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\obj\x64\Debug\transaction_coordinator.pdb
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\BouncyCastle.Crypto.dll
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\MailKit.dll
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\MimeKit.dll
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\BouncyCastle.Crypto.xml
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\MailKit.pdb
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\MailKit.xml
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\MimeKit.pdb
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\MimeKit.xml
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\Microsoft.WindowsAzure.Configuration.dll
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\Microsoft.WindowsAzure.Configuration.xml

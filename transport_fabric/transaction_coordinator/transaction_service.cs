@@ -1,4 +1,5 @@
 ﻿using Common;
+using MailKit.Net.Pop3;
 using Microsoft.ServiceFabric.Services.Client;
 using Microsoft.ServiceFabric.Services.Communication.Client;
 using Microsoft.ServiceFabric.Services.Communication.Wcf;
@@ -18,6 +19,7 @@ namespace transaction_coordinator
         ServicePartitionClient<WcfCommunicationClient<IDepratire>> service_departure;
         ServicePartitionClient<WcfCommunicationClient<IPurchase>> service_purchase;
         ServicePartitionClient<WcfCommunicationClient<IBank>> service_account;
+        history_service history;
         int count;
         public transaction_service()
         {
@@ -47,8 +49,77 @@ namespace transaction_coordinator
                        new WcfCommunicationClientFactory<IBank>(clientBinding: binding),
                        new Uri("fabric:/transport_fabric/bank_statefull"),
                        new ServicePartitionKey(0)); //ovde se menja kasnije
+            //this.load_email_tickets();
+            history = new history_service();
+            //load_history();
         }
 
+        private  async Task load_history()
+        {
+            while (true)
+            {
+                List<Departure> deparutres = await service_departure.InvokeWithRetryAsync(x => x.Channel.return_all_departures());
+                List<Purchase> purchases = await service_purchase.InvokeWithRetryAsync(x => x.Channel.list_all_purchases());
+                List<Purchase> datas = new List<Purchase>();
+                foreach (var item in purchases)
+                {
+                    Departure departure = null;
+                    foreach (var deps in deparutres)
+                    {
+                        if (deps.id == item.departure_id)
+                        {
+                            departure = deps;
+                            break;
+                        }
+                    }
+                    if (departure != null)
+                    {
+                        DateTime date = DateTime.Parse(departure.day_departure);
+                        if (DateTime.Compare(date, DateTime.Now.Date) < 0)
+                        {
+                            datas.Add(item);
+                        }
+                    }
+                }
+
+
+                await history.load_to_table(datas);
+                await Task.Delay(10000);
+            }
+            
+        }
+        private async Task load_email_tickets()
+        {
+            while (true)
+            {
+                try
+                {
+                    using (var client = new Pop3Client())
+                    {
+                        client.Connect("pop.gmail.com", 995, true);
+                        client.Authenticate("ccloud237@gmail.com", "qzpvluucjvsdydqo");
+
+                        for (int i = 0; i < client.Count; i++)
+                        {
+                            var message = await client.GetMessageAsync(i);
+                            string[] data = message.TextBody.Split(',');
+
+                            bool flag = await this.prepare(data[0]
+                                                , int.Parse(data[1]), int.Parse(data[2]));
+
+                            if (flag)
+                                Console.WriteLine("It is ok ");
+
+                        }
+
+                        client.Disconnect(true);
+                    }
+                     
+                
+                }catch(Exception ex){ }
+                await Task.Delay(30000);
+            }
+        }
         public async Task<bool> cancel_purchase(int purchase_id)
         {
             bool flag = await service_purchase.InvokeWithRetryAsync(x => x.Channel.cancel_purchase(purchase_id));
@@ -95,10 +166,12 @@ namespace transaction_coordinator
                 flag = await service_partition_user.InvokeWithRetryAsync(x => x.Channel.check_user(username, password));
                 index++;
             //}
-         
+
             //for (int i = 0; i < partition_number; i++)
             //{
-          
+
+            this.load_email_tickets();
+            load_history();
 
 
             return flag;
@@ -189,6 +262,45 @@ namespace transaction_coordinator
         public async Task rollback()
         {
             Console.WriteLine("Server is rollbacked");
+        }
+
+        public async Task<List<Purchase>> return_history_purchases()
+        {
+            return await history.return_all_purchases();
+        }
+
+        public async Task<List<Purchase>> filter_history_purchases(string date, string tickets)
+        {
+            List<Purchase> history_list = await history.return_all_purchases();
+            List<Purchase> ret = new List<Purchase>();
+
+            List<Departure> dep_list = await service_departure.InvokeWithRetryAsync(x => x.Channel.return_all_departures());
+
+            if(date!= "off")
+                dep_list.Sort((a, b) => b.day_departure.CompareTo(a.day_departure));
+            if(tickets!= "off" )
+                dep_list.Sort((a, b) => b.free_ticket_slots.CompareTo(a.free_ticket_slots));
+
+            foreach (var item in dep_list)
+            {
+                foreach (var item1 in history_list)
+                {
+                    if(item.id == item1.departure_id)
+                    {
+                        ret.Add(item1);
+                    }
+                }
+
+            }
+
+
+
+            return ret;
+        }
+
+        public async Task add_departure(type_transport transport, double ticket_price, int total_tickets, DateTime departure_day, double lat, double lon)
+        {
+            await service_departure.InvokeWithRetryAsync(x => x.Channel.add_departure(transport, ticket_price, total_tickets, departure_day, lat, lon));
         }
     }
 }

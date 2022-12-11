@@ -1,4 +1,5 @@
 ﻿using Common;
+using MailKit.Net.Pop3;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.ServiceFabric.Services.Client;
 using Microsoft.ServiceFabric.Services.Communication.Client;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Fabric;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Web_app.Models;
 
@@ -16,20 +18,19 @@ namespace Web_app.Controllers
 {
     public class HomeController : Controller
     {
-        ServicePartitionClient<WcfCommunicationClient<ITransactions>> service_partition_client;
-        List<Departure> departures;
-
+        ServicePartitionClient<WcfCommunicationClient<ITransactions>> service_partition_client { get; set; }
+        [Obsolete]
+        List<Departure> departures { get; set; } = new List<Departure>();
         public HomeController()
         {
             load();
-            import();
         }
 
         public async Task<IActionResult> Index()
         {
             return View();
         }
-        public async void load()
+        public void load()
         {
             var binding = WcfUtility.CreateTcpClientBinding();
 
@@ -41,28 +42,21 @@ namespace Web_app.Controllers
 
             
         }
-        public async void import()
-        {
-            departures = await service_partition_client.InvokeWithRetryAsync(x => x.Channel.return_all_departures());
-        }
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-            ViewData["login"] = "true";
-            return View();
-        }
+
 
         [HttpPost("/login")]
         public async Task<IActionResult> login(string username, string password)
         {
+            
             //Send to table and check
             //FabricClient fabric_client = new FabricClient();
 
             //int partition_number = (await fabric_client.QueryManager.GetApplicationListAsync(new Uri("fabric:/transport_fabric/transaction_cordinator"))).Count;
-            import();
+            ViewBag.departures = await service_partition_client.InvokeWithRetryAsync(x => x.Channel.return_all_departures());
+            ViewBag.history = await service_partition_client.InvokeWithRetryAsync(x => x.Channel.return_history_purchases());
             bool flag = await service_partition_client.InvokeWithRetryAsync(client => client.Channel.check_user(username, password));
             if (flag)
-                return View("user_store",departures);
+                return View("user_store");
             return View("Index");
         }
         [HttpPost("/register")]
@@ -103,17 +97,13 @@ namespace Web_app.Controllers
         [HttpPost("/filter")]
         public async Task<IActionResult> filter(string type, DateTime departure_day,string free_tickets)
         {
-            //Send to table and check
-            //FabricClient fabric_client = new FabricClient();
-
-            //int partition_number = (await fabric_client.QueryManager.GetApplicationListAsync(new Uri("fabric:/transport_fabric/transaction_cordinator"))).Count;
-
-            //bool flag = await service_partition_client.InvokeWithRetryAsync(client => client.Channel.check_user(username, password));
-            if (free_tickets == null)
+           if (free_tickets == null)
                 free_tickets = "off";
-            departures = await service_partition_client.InvokeWithRetryAsync(
+            ViewBag.departures = await service_partition_client.InvokeWithRetryAsync(
                                     x => x.Channel.return_filtered_departures(type, free_tickets, departure_day));
-                return View("user_store", departures);
+
+            ViewBag.history = await service_partition_client.InvokeWithRetryAsync(x => x.Channel.return_history_purchases());
+            return View("user_store");
         }
 
 
@@ -121,19 +111,18 @@ namespace Web_app.Controllers
         [HttpPost("/purchase")]
         public async Task<IActionResult> purchase(string username, int id_departure, int count)
         {
-            //Send to table and check
-            //FabricClient fabric_client = new FabricClient();
-
-            //int partition_number = (await fabric_client.QueryManager.GetApplicationListAsync(new Uri("fabric:/transport_fabric/transaction_cordinator"))).Count;
-
-            //bool flag = await service_partition_client.InvokeWithRetryAsync(client => client.Channel.check_user(username, password));
+            
             bool flag = await service_partition_client.InvokeWithRetryAsync(x => x.Channel.prepare(username, id_departure, count));
 
             if(flag)
                 Console.WriteLine("Made it");
             else
                 Console.WriteLine("Something wrong");
-            return View("user_store",departures);
+            ViewBag.departures = await service_partition_client.InvokeWithRetryAsync(x => x.Channel.return_all_departures());
+
+
+            ViewBag.history = await service_partition_client.InvokeWithRetryAsync(x => x.Channel.return_history_purchases());
+            return View("user_store");
         }
 
         [HttpPost("/cancel_ticket")]
@@ -144,7 +133,38 @@ namespace Web_app.Controllers
                 Console.WriteLine("Made it");
             else
                 Console.WriteLine("Something wrong");
-            return View("user_store", departures);
+
+            ViewBag.departures = await service_partition_client.InvokeWithRetryAsync(x => x.Channel.return_all_departures());
+
+
+            ViewBag.history = await service_partition_client.InvokeWithRetryAsync(x => x.Channel.return_history_purchases());
+
+            return View("user_store");
+        }
+
+
+        [HttpPost("/filter_history")]
+        public async Task<IActionResult> filter_history(string departure_day, string free_tickets)
+        {
+
+
+            ViewBag.history = await service_partition_client.InvokeWithRetryAsync(x => x.Channel.filter_history_purchases(departure_day, free_tickets));
+            ViewBag.departures = await service_partition_client.InvokeWithRetryAsync(x => x.Channel.return_all_departures());
+
+            return View("user_store");
+        }
+
+        [HttpPost("/add_departure")]
+        public async Task<IActionResult> add_departure(type_transport transport, double ticket_price, int total_tickets, DateTime departure_day, double lat, double lon)
+        {
+
+            await service_partition_client.InvokeWithRetryAsync(x => x.Channel.add_departure(transport, ticket_price, total_tickets, departure_day, lat, lon));
+
+
+            ViewBag.history = await service_partition_client.InvokeWithRetryAsync(x => x.Channel.return_history_purchases());
+            ViewBag.departures = await service_partition_client.InvokeWithRetryAsync(x => x.Channel.return_all_departures());
+
+            return View("user_store");
         }
     }
 }

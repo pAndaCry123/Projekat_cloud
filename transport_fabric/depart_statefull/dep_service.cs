@@ -30,23 +30,23 @@ namespace depart_statefull
 
         private async void add()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
                 Departure dd = new Departure(i.ToString()) { id = i+1 };
                 dd.type = ((type_transport)(i % 3)).ToString();
-                dd.day_departure = DateTime.Now.AddDays(i).ToShortDateString();
+                dd.day_departure = DateTime.Now.AddDays((i-2)*2).ToShortDateString();
                 dd.return_date = DateTime.Now.AddDays(10 + i).ToShortDateString();
                 dd.ticket_price = (i + 1) * 20;
                 dd.total_tickets = 10;
                 dd.free_ticket_slots = 10;
-                dd.weather = await weather_get(i % 4);
+                dd.weather = await weather_get(lat_lon[i % 4].Item1, lat_lon[i % 4].Item2);
                 context.add_user(dd);
             }
         }
-        private async Task<string> weather_get(int index)
+        private async Task<string> weather_get(double lat,double lon)
         {
             HttpClient req = new HttpClient();
-            var uri = string.Format("https://fcc-weather-api.glitch.me/api/current?lat={0}&lon={0}",lat_lon[index].Item1,lat_lon[index].Item2);
+            var uri = string.Format("https://fcc-weather-api.glitch.me/api/current?lat={0}&lon={0}",lat,lon);
 
             HttpClient client = new HttpClient();
 
@@ -87,6 +87,26 @@ namespace depart_statefull
         public async Task retrive_deprature(int id_deparute, int count)
         {
             await context.retrive_departure(id_deparute, count);
+        }
+
+        public async Task add_departure(type_transport transport, double ticket_price, int total_tickets, DateTime departure_day, double lat, double lon)
+        {
+            string num = context.return_count_departures();
+            string weather = await weather_get(lat, lon);
+
+            Departure departure = new Departure(num)
+            {
+                id = int.Parse(num) + 1,
+                type = transport.ToString(),
+                ticket_price = ticket_price,
+                total_tickets = total_tickets,
+                free_ticket_slots = total_tickets,
+                day_departure = departure_day.ToShortDateString(),
+                return_date = departure_day.AddDays(10).ToShortDateString(),
+                weather = weather                                                                    ,
+            };
+            context.add_user(departure);
+
         }
     }
 }

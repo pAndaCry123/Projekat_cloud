@@ -18,6 +18,9 @@ namespace Common
         Task<bool> cancel_purchase(int purchase_id);
 
         [OperationContract]
+        Task<List<Purchase>> list_all_purchases();
+
+        [OperationContract]
         Task<Purchase> purchase_get(int purchase_id);
 
         [OperationContract]
