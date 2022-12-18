@@ -28,5 +28,7 @@ namespace Common
 
         [OperationContract]
         Task add_departure(type_transport transport, double ticket_price, int total_tickets, DateTime departure_day, double lat, double lon);
+        [OperationContract]
+        Task add_departure_dict(Departure departure);
     }
 }

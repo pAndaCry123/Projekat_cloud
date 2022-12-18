@@ -36,6 +36,19 @@ namespace user_statefull
             }
         }
 
+        public async Task<bool> create_user_dict(User user)
+        {
+            if (await context.check_user(user.username,user.password))
+            {
+                return false;
+            }
+            else
+            {
+                context.add_user(user);
+                return true;
+            }
+        }
+
         public async Task<User> return_user(string username)
         {
             return await context.return_user_username(username);

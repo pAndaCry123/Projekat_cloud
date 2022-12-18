@@ -11,7 +11,7 @@ namespace Common
     public interface ITransactions 
     {
         [OperationContract]
-        Task commit(Departure departure,User user);
+        Task commit(Departure departure,User user,int count);
 
         [OperationContract]
         Task<bool> prepare(string username, int id_departure, int count);

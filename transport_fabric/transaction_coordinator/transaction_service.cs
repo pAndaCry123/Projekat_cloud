@@ -1,5 +1,7 @@
 ﻿using Common;
 using MailKit.Net.Pop3;
+using Microsoft.ServiceFabric.Data;
+using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Client;
 using Microsoft.ServiceFabric.Services.Communication.Client;
 using Microsoft.ServiceFabric.Services.Communication.Wcf;
@@ -19,10 +21,12 @@ namespace transaction_coordinator
         ServicePartitionClient<WcfCommunicationClient<IDepratire>> service_departure;
         ServicePartitionClient<WcfCommunicationClient<IPurchase>> service_purchase;
         ServicePartitionClient<WcfCommunicationClient<IBank>> service_account;
+        IReliableStateManager manager;
         history_service history;
         int count;
-        public transaction_service()
+        public transaction_service(IReliableStateManager manager)
         {
+            this.manager = manager;
             count = 0;
             var binding = WcfUtility.CreateTcpClientBinding();
             this.service_partition_user = new
@@ -52,7 +56,56 @@ namespace transaction_coordinator
             //this.load_email_tickets();
             history = new history_service();
             //load_history();
+         
         }
+        private async Task load_dict()
+        {
+
+            List<Departure> deps = await service_departure.InvokeWithRetry(x => x.Channel.return_all_departures());
+
+            var departures = await this.manager.GetOrAddAsync<IReliableDictionary<string, List<Departure>>>("departures");
+            using (var tx = this.manager.CreateTransaction())
+            {
+                List<Departure> users_list = (await departures.TryGetValueAsync(tx, "departures")).Value;
+                foreach (var item in deps)
+                {
+                    users_list.Add(item);
+                }
+                await departures.TryRemoveAsync(tx, "departures");
+                await departures.TryAddAsync(tx, "departures", users_list);
+                await tx.CommitAsync();
+            }
+        }
+        private async Task load_dictionaries()
+        {
+            while (true)
+            {
+                var users = await this.manager.GetOrAddAsync<IReliableDictionary<string, List<User>>>("users");
+                using (var tx = this.manager.CreateTransaction())
+                {
+                    List<User> users_list = (await users.TryGetValueAsync(tx, "users")).Value;
+                    foreach (var item in users_list)
+                    {
+                        await service_partition_user.InvokeWithRetryAsync(x => x.Channel.create_user_dict(item));
+                    }
+                    await tx.CommitAsync();
+                }
+                var departures = await this.manager.GetOrAddAsync<IReliableDictionary<string, List<Departure>>>("departures");
+                using (var tx = this.manager.CreateTransaction())
+                {
+                    List<Departure> users_list = (await departures.TryGetValueAsync(tx, "departures")).Value;
+                    foreach (var item in users_list)
+                    {
+                        await service_departure.InvokeWithRetryAsync(x => x.Channel.add_departure_dict(item));
+                    }
+                    await tx.CommitAsync();
+                }
+                await Task.Delay(60000);
+            }
+            
+        }
+
+
 
         private  async Task load_history()
         {
@@ -84,7 +137,7 @@ namespace transaction_coordinator
 
 
                 await history.load_to_table(datas);
-                await Task.Delay(60000);
+                await Task.Delay(70000);
             }
             
         }
@@ -117,7 +170,7 @@ namespace transaction_coordinator
                      
                 
                 }catch(Exception ex){ }
-                await Task.Delay(60000);
+                await Task.Delay(80000);
             }
         }
         public async Task<bool> cancel_purchase(int purchase_id)
@@ -139,6 +192,23 @@ namespace transaction_coordinator
                     await service_departure.InvokeWithRetryAsync(x => x.Channel.retrive_deprature(departure.id, purchase.count_tickets));
 
                     await this.commit_purchase(purchase);
+
+                    var departures = await this.manager.GetOrAddAsync<IReliableDictionary<string, List<Departure>>>("departures");
+                    using (var tx = this.manager.CreateTransaction())
+                    {
+                        List<Departure> users_list = (await departures.TryGetValueAsync(tx, "departures")).Value;
+                        foreach (var item in users_list)
+                        {
+                            if(item.id == departure.id)
+                            {
+                                item.free_ticket_slots += purchase.count_tickets;
+                                break;
+                            }
+                        }
+                        await departures.TryRemoveAsync(tx, "departures");
+                        await departures.TryAddAsync(tx, "departures",users_list);
+                        await tx.CommitAsync();
+                    }
 
                     return true;
                 }
@@ -172,12 +242,12 @@ namespace transaction_coordinator
 
             this.load_email_tickets();
             load_history();
-
-
+            load_dictionaries();
+            await load_dict();
             return flag;
         }
 
-        public async Task commit(Departure deparutre, User user)
+        public async Task commit(Departure deparutre, User user,int count)
         {
             try
             {
@@ -186,10 +256,24 @@ namespace transaction_coordinator
                 await service_partition_user.InvokeWithRetryAsync(x => x.Channel.update_user_purchase_list(number, user.username));
                 await service_account.InvokeWithRetryAsync(x => x.Channel.update_user_account(user.account_id, deparutre.ticket_price * count));
                 await service_departure.InvokeWithRetryAsync(x => x.Channel.update_deprature(deparutre.id, count));
+
+                var departures = await this.manager.GetOrAddAsync<IReliableDictionary<string, List<Departure>>>("departures");
+                using (var tx = this.manager.CreateTransaction())
+                {
+                    List<Departure> users_list = (await departures.TryGetValueAsync(tx, "departures")).Value;
+                    foreach (var item in users_list)
+                    {
+                        if(item.id == deparutre.id)
+                        {
+                            item.free_ticket_slots -= count;
+                        }
+                    }
+                    await tx.CommitAsync();
+                }
             }
             catch (Exception ex)
             {
-                this.rollback();
+                await this.rollback();
             }
         }
 
@@ -200,7 +284,7 @@ namespace transaction_coordinator
                 await service_purchase.InvokeWithRetryAsync(x => x.Channel.delete_purchase(purchase));
             }catch(Exception ex)
             {
-                this.rollback();
+                await this.rollback();
             }
         }
 
@@ -215,7 +299,20 @@ namespace transaction_coordinator
             //for (int i = 0; i < partition_number; i++)
             //{
               
-                flag = await service_partition_user.InvokeWithRetryAsync(x => x.Channel.create_user(username,email, password,account_id));
+            flag = await service_partition_user.InvokeWithRetryAsync(x => x.Channel.create_user(username,email, password,account_id));
+            if (flag)
+            {
+                var users = await this.manager.GetOrAddAsync<IReliableDictionary<string, List<User>>>("users");
+                using (var tx = this.manager.CreateTransaction())
+                {
+                    List<User> users_list = (await users.TryGetValueAsync(tx, "users")).Value;
+                    User user = await service_partition_user.InvokeWithRetryAsync(x => x.Channel.return_user(username));
+                    users_list.Add(user);
+                    await users.TryRemoveAsync(tx, "users");
+                    await users.TryAddAsync(tx, "users",users_list);
+                    await tx.CommitAsync();
+                }
+            }
                 index++;
             //}
 
@@ -236,16 +333,13 @@ namespace transaction_coordinator
                 if (number > 0)
                 {
                     this.count = count;
-                    await this.commit(departure, user);
+                    await this.commit(departure, user,count);
                     return true;
                 }
                 return false;
             }
             else
                 return false;
-
-
-
 
         }
 
@@ -276,10 +370,10 @@ namespace transaction_coordinator
 
             List<Departure> dep_list = await service_departure.InvokeWithRetryAsync(x => x.Channel.return_all_departures());
 
-            if(date!= "off")
-                dep_list.Sort((a, b) => b.day_departure.CompareTo(a.day_departure));
-            if(tickets!= "off" )
-                dep_list.Sort((a, b) => b.free_ticket_slots.CompareTo(a.free_ticket_slots));
+            if(date != null && date!= "off")
+                dep_list.Sort((a, b) =>  DateTime.Compare(DateTime.Parse(b.day_departure), DateTime.Parse(a.day_departure)));
+            if(tickets!=null &&  tickets!= "off" )
+                dep_list.Sort((a, b) => a.free_ticket_slots.CompareTo(b.free_ticket_slots));
 
             foreach (var item in dep_list)
             {
@@ -293,14 +387,29 @@ namespace transaction_coordinator
 
             }
 
-
-
             return ret;
         }
 
         public async Task add_departure(type_transport transport, double ticket_price, int total_tickets, DateTime departure_day, double lat, double lon)
         {
             await service_departure.InvokeWithRetryAsync(x => x.Channel.add_departure(transport, ticket_price, total_tickets, departure_day, lat, lon));
+            List<Departure> departures = await service_departure.InvokeWithRetryAsync(x => x.Channel.return_all_departures());
+            foreach (var item in departures)
+            {
+                if(item.ticket_price == ticket_price && item.type == transport.ToString())
+                {
+                    var departure = await this.manager.GetOrAddAsync<IReliableDictionary<string, List<Departure>>>("departures");
+                    using (var tx = this.manager.CreateTransaction())
+                    {
+                        List<Departure> users_list = (await departure.TryGetValueAsync(tx, "departures")).Value;
+                        users_list.Add(item);
+                        await departure.TryRemoveAsync(tx, "departures");
+                        bool flag = await departure.TryAddAsync(tx, "departures", users_list);
+                        await tx.CommitAsync();
+                    }
+                }
+
+            }
         }
     }
 }

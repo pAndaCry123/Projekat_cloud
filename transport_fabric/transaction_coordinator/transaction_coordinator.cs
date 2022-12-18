@@ -35,7 +35,7 @@ namespace transaction_coordinator
                 new ServiceReplicaListener(context =>
                 {
                     return new  WcfCommunicationListener<ITransactions>(context,
-                            new transaction_service(),
+                            new transaction_service(this.StateManager),
                             WcfUtility.CreateTcpListenerBinding(),
                             "ServiceEndpoint"
 
@@ -44,7 +44,25 @@ namespace transaction_coordinator
 
                 };
         }
-
+        private async Task set_elements()
+        {
+            try
+            {
+                var users = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, List<User>>>("users");
+                using (var tx = this.StateManager.CreateTransaction())
+                {
+                    await users.TryAddAsync(tx, "users", new List<User>());
+                    await tx.CommitAsync();
+                }
+                var departures = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, List<Departure>>>("departures");
+                using (var tx = this.StateManager.CreateTransaction())
+                {
+                    await departures.TryAddAsync(tx, "departures", new List<Departure>());
+                    await tx.CommitAsync();
+                }
+            }
+            catch (Exception e) { }
+        }
         /// <summary>
         /// This is the main entry point for your service replica.
         /// This method executes when this replica of your service becomes primary and has write status.
@@ -56,6 +74,9 @@ namespace transaction_coordinator
             //       or remove this RunAsync override if it's not needed in your service.
 
             var myDictionary = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, long>>("myDictionary");
+            var users = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, List<User>>>("users");
+            var departures = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, List<Departure>>>("departures");
+            await set_elements();
 
             while (true)
             {

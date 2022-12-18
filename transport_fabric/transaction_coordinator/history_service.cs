@@ -15,6 +15,7 @@ namespace transaction_coordinator
         {
             context = new history_table_context();
         }
+  
 
         public async Task load_to_table(List<Purchase>list)
         {

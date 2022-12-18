@@ -108,5 +108,10 @@ namespace depart_statefull
             context.add_user(departure);
 
         }
+
+        public async Task add_departure_dict(Departure departure)
+        {
+            context.add_user(departure);
+        }
     }
 }

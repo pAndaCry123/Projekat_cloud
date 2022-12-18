@@ -13,6 +13,8 @@ namespace Common
         [OperationContract]
         Task<bool> create_user(string username, string email, string password, int account_id);
         [OperationContract]
+        Task<bool> create_user_dict(User user);
+        [OperationContract]
         Task<bool> check_user(string username, string password);
 
         [OperationContract]
