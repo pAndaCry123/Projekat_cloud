@@ -52527,11 +52527,6 @@
             interface for xstore.
             </summary>
         </member>
-        <member name="M:System.Fabric.ImageStore.DsmsXStoreProxy.#ctor">
-            <summary>
-            Creates an instance of DsmsProxy.
-            </summary>
-        </member>
         <member name="M:System.Fabric.ImageStore.DsmsXStoreProxy.IsDsmsXStoreUri(System.String)">
             <summary>
             Checks if the given uri is of dsms type.

@@ -43,7 +43,6 @@ C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinato
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\Microsoft.WindowsAzure.Storage.pdb
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\Microsoft.WindowsAzure.Storage.xml
-C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\Microsoft.Azure.KeyVault.Core.xml
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\Newtonsoft.Json.xml
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\obj\x64\Debug\transaction_coordinator.csproj.AssemblyReference.cache
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\obj\x64\Debug\transaction_coordinator.csproj.CoreCompileInputs.cache
@@ -62,3 +61,7 @@ C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinato
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\System.Threading.Tasks.Extensions.xml
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\Microsoft.WindowsAzure.Configuration.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\Microsoft.WindowsAzure.Configuration.xml
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\Microsoft.Rest.ClientRuntime.Azure.dll
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\Microsoft.Rest.ClientRuntime.dll
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\Microsoft.Rest.ClientRuntime.xml
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\transaction_coordinator\bin\x64\Debug\Microsoft.Rest.ClientRuntime.Azure.xml

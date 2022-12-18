@@ -200,3 +200,7 @@ C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net4
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\bin\Debug\net472\win7-x64\MailKit.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\bin\Debug\net472\win7-x64\MimeKit.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\bin\Debug\net472\win7-x64\BouncyCastle.Crypto.dll
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\bin\Debug\net472\win7-x64\Microsoft.AspNetCore.Session.dll
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\Razor\Views\Login\Index.cshtml.g.cs
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\Razor\Views\Register\Index.cshtml.g.cs
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\Razor\Views\User\Index.cshtml.g.cs

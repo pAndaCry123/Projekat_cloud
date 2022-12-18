@@ -28,7 +28,6 @@ C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\bank_statefull\bin\x64
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\bank_statefull\bin\x64\Debug\System.Numerics.Vectors.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\bank_statefull\bin\x64\Debug\System.Runtime.CompilerServices.Unsafe.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\bank_statefull\bin\x64\Debug\Common.pdb
-C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\bank_statefull\bin\x64\Debug\Microsoft.Azure.KeyVault.Core.xml
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\bank_statefull\bin\x64\Debug\Microsoft.ServiceFabric.Data.xml
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\bank_statefull\bin\x64\Debug\Microsoft.ServiceFabric.Data.Interfaces.xml
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\bank_statefull\bin\x64\Debug\Microsoft.ServiceFabric.Diagnostics.xml
@@ -52,3 +51,7 @@ C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\bank_statefull\obj\x64
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\bank_statefull\obj\x64\Debug\bank_statefull.csproj.CopyComplete
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\bank_statefull\obj\x64\Debug\bank_statefull.exe
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\bank_statefull\obj\x64\Debug\bank_statefull.pdb
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\bank_statefull\bin\x64\Debug\Microsoft.Rest.ClientRuntime.Azure.dll
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\bank_statefull\bin\x64\Debug\Microsoft.Rest.ClientRuntime.dll
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\bank_statefull\bin\x64\Debug\Microsoft.Rest.ClientRuntime.xml
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\bank_statefull\bin\x64\Debug\Microsoft.Rest.ClientRuntime.Azure.xml

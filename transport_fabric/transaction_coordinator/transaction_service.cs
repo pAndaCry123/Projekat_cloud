@@ -84,7 +84,7 @@ namespace transaction_coordinator
 
 
                 await history.load_to_table(datas);
-                await Task.Delay(10000);
+                await Task.Delay(60000);
             }
             
         }
@@ -117,7 +117,7 @@ namespace transaction_coordinator
                      
                 
                 }catch(Exception ex){ }
-                await Task.Delay(30000);
+                await Task.Delay(60000);
             }
         }
         public async Task<bool> cancel_purchase(int purchase_id)

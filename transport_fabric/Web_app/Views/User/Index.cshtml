@@ -1,0 +1,134 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<div>
+    <h1>Summary furture departure</h1>
+    @{
+        <table class="table table-hover table-dark">
+            <tr>
+                <th>Id</th>
+                <th>Transport type</th>
+                <th>Ticket price</th>
+                <th>Total tickets</th>
+                <th>Rest free tickets</th>
+                <th>Departure day</th>
+                <th>Return day</th>
+                <th>Weather</th>
+            </tr>
+            @foreach (Common.Departure item in (IEnumerable<Common.Departure>)ViewBag.departures)
+            {
+                <tr>
+                    <td> @item.id</td>
+                    <td>@item.type</td>
+                    <td>@item.ticket_price</td>
+                    <td>@item.total_tickets</td>
+                    <td>@item.free_ticket_slots</td>
+                    <td>@item.day_departure</td>
+                    <td>@item.return_date</td>
+                    <td>@item.weather</td>
+                </tr>
+            }
+        </table>
+
+        <div class="form-group row">
+            <p>You can filter this:</p>
+            <form name="filter_departures" id="filter_departures" action="filter" method="post" class="form-inline">
+                <select class="col-lg-2" id="transport" name="type">
+                    <option value="none">Empty</option>
+                    <option value="Autobus">Autobus</option>
+                    <option value="Plane">Plane</option>
+                    <option value="Train">Train</option>
+
+
+                </select>
+                <input class="col-lg-2" type="date" name="departure_day" />
+                <input class="col-lg-2" type="checkbox" name="free_tickets" id="free_tickets" />
+                <label class="col-lg-2" for="free_tickets">Tickets</label>
+                <input class="col-lg-1" type="submit" value="Search" />
+            </form>
+        </div>
+
+
+    }
+</div>
+
+<div class="form-group row">
+    <p>Create purchase</p>
+    <form action="purchase" method="post">
+        <input class="col-lg-2" type="text" name="username" placeholder="Username" />
+        <input class="col-lg-2" type="number" name="id_departure" placeholder="Id departure" />
+        <input class="col-lg-2" type="number" name="count" placeholder="Count" />
+        <input class="col-lg-1" type="submit" value="Purchase" />
+    </form>
+</div>
+
+
+<div class="form-group row">
+    <p>Cancel purchashed ticket</p>
+    <form action="cancel_ticket" method="post">
+        <input class="col-lg-2" type="number" name="purchase_id" placeholder="Purchase id" />
+        <input class="col-lg-1" type="submit" value="Cancel" />
+    </form>
+
+</div>
+
+
+
+
+<div>
+    <h1>Summary history purchases</h1>
+    @{
+        <table class="table table-dark table-hover">
+            <tr>
+                <th>Id</th>
+                <th>Departure id</th>
+                <th>Username</th>
+            </tr>
+            @foreach (Common.Purchase item in (IEnumerable<Common.Purchase>)ViewBag.history)
+            {
+                <tr>
+                    <td> @item.purchase_id</td>
+                    <td>@item.departure_id</td>
+                    <td>@item.username</td>
+
+                </tr>
+            }
+        </table>
+
+        <p>You can filter this:</p>
+        <form action="filter_history" method="post" class="form-inline">
+            <input type="checkbox" name="departure_day" id="departure_day" />
+            <label for="departure_day">Departures</label>
+            <input type="checkbox" name="free_tickets" id="free_tickets" />
+            <label for="free_tickets">Tickets</label>
+            <input type="submit" value="Search" />
+        </form>
+
+    }
+</div>
+
+
+
+
+<div class="form-group row">
+    <p>You can filter this:</p>
+    <form name="filter_departures" id="filter_departures" action="add_departure" method="post">
+        <select class="col-lg-2" id="transport" name="transport">
+            <option value="none">Empty</option>
+            <option value="Autobus">Autobus</option>
+            <option value="Plane">Plane</option>
+            <option value="Train">Train</option>
+        </select>
+        <input class="col-lg-2" type="date" name="departure_day" />
+        <input class="col-lg-2" type="number" name="ticket_price" id="ticket_price" placeholder="Ticket price" />
+        <input class="col-lg-2" type="number" name="total_tickets" id="total_tickets" placeholder="Total tickets" />
+        <input class="col-lg-2" type="number" name="lat" id="lat" placeholder="Lat" />
+        <input class="col-lg-2" type="number" name="lon" id="lon" placeholder="Lon" />
+
+        <input class="col-lg-1" type="submit" value="Add departure" />
+    </form>
+</div>

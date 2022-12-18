@@ -97,6 +97,7 @@ C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net4
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Microsoft.AspNetCore.Server.Kestrel.Https.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.dll
+C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Microsoft.AspNetCore.Session.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Microsoft.AspNetCore.StaticFiles.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Microsoft.AspNetCore.WebUtilities.dll
 C:\Users\Korisnik\Desktop\Projekat_cloud\transport_fabric\Web_app\obj\Debug\net472\win7-x64\PubTmp\Out\Microsoft.Bcl.AsyncInterfaces.dll
